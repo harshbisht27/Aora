@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { ScrollView, Image, Text, View } from "react-native";
+import {Redirect,router} from 'expo-router'
 import { Link } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "../components/CustomButton";
@@ -21,9 +22,9 @@ export default function App() {
           >
           </Image>
           <View className="relative mt-5 ">
-            <Text className="3xl text-white font-bold text-center">
+            <Text className="text-3xl text-white font-bold text-center">
               Discoveer Endless{"\n"} Possibilities with{" "}
-              <Text className="text-secondary-200"> Aora</Text>
+              <Text className="text-secondary-200">Aora</Text>
             </Text>
             <Image
               source={images.path}
