@@ -1,18 +1,42 @@
 import { useState } from "react";
 import { Link, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, ScrollView, Image } from "react-native";
-
+import { Alert,View, Text, ScrollView, Image } from "react-native";
+import { useGlobalContext } from '../../context/GlobalProvider';
 import { images } from "../../constants";
 import CustomButton from "../../components/CustomButton"
 import FormField from "../../components/FormField";
+import { getCurrentUser, signIn } from '../../lib/appwrite';
+
 
 const SignIn = () => {
-
+  const { setUser, setIsLogged } = useGlobalContext();
+  const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+  const submit = async () => {
+    if (form.email === '' || form.password === '') {
+      Alert.alert('Error', 'Please fill in all fields');
+    }
+
+    setSubmitting(true);
+
+    try {
+      await signIn(form.email, form.password);
+      const result = await getCurrentUser();
+      setUser(result);
+      setIsLoggedIn(true);
+
+      Alert.alert('Success', 'User signed in successfully');
+      router.replace('/home');
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -51,7 +75,7 @@ const SignIn = () => {
       />
       <CustomButton
             title="Sign In"
-
+            handlePress={submit}
             containerStyles="mt-7"
           />
       <View className="flex justify-center pt-5 flex-row gap-2">
