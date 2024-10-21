@@ -11,19 +11,18 @@ import { useGlobalContext } from "../../context/GlobalProvider";
 
 const SignUp = () => {
   const { setUser, setIsLogged } = useGlobalContext();
-  const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: "",
     username:"",
   });
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const submit = async () => {
     if (form.username === "" || form.email === "" || form.password === "") {
       Alert.alert("Error", "Please fill in all fields");
     }
 
-    setSubmitting(true);
+    setIsSubmitting(true);
     try {
       const result = await createUser(form.email, form.password, form.username);
       setUser(result);
@@ -33,7 +32,7 @@ const SignUp = () => {
     } catch (error) {
       Alert.alert("Error", error.message);
     } finally {
-      setSubmitting(false);
+      setIsSubmitting(false);
     }
   };
   return (
